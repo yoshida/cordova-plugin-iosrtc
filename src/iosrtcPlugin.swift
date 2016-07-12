@@ -716,6 +716,32 @@ class iosrtcPlugin : CDVPlugin {
 	}
 
 
+	func MediaStreamRenderer_image(command: CDVInvokedUrlCommand) {
+		NSLog("iosrtcPlugin#MediaStreamRenderer_image()")
+
+		let id = command.argumentAtIndex(0) as! Int
+		let pluginMediaStreamRenderer = self.pluginMediaStreamRenderers[id]
+
+		if pluginMediaStreamRenderer == nil {
+			NSLog("iosrtcPlugin#MediaStreamRenderer_image() | ERROR: pluginMediaStreamRenderer with id=%@ does not exist", String(id))
+			return
+		}
+		
+		pluginMediaStreamRenderer!.image(id,
+			callback: { (data: NSDictionary) -> Void in
+				self.emit(command.callbackId,
+					result: CDVPluginResult(status: CDVCommandStatus_OK, messageAsDictionary: data as [NSObject : AnyObject])
+				)
+			},
+			errback: { (error: String) -> Void in
+				self.emit(command.callbackId,
+					result: CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: error)
+				)
+			}
+		)
+	}
+
+
 	func getUserMedia(command: CDVInvokedUrlCommand) {
 		NSLog("iosrtcPlugin#getUserMedia()")
 
