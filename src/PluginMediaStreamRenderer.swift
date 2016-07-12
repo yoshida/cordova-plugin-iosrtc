@@ -217,6 +217,31 @@ class PluginMediaStreamRenderer : NSObject, RTCEAGLVideoViewDelegate {
 	}
 
 
+	func image(
+		constraints: Int,
+		callback: (data: NSDictionary) -> Void,
+		errback: (error: String) -> Void
+	) {
+		NSLog("PluginMediaStreamRenderer#image()")
+
+		UIGraphicsBeginImageContextWithOptions(self.videoView.bounds.size, true, 0.0)
+		self.videoView.drawViewHierarchyInRect(self.videoView.bounds, afterScreenUpdates: false)
+
+		self.videoView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+		let image = UIGraphicsGetImageFromCurrentImageContext()
+		UIGraphicsEndImageContext()
+		var imageData = UIImagePNGRepresentation(image)
+
+		var base64String = imageData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+		base64String = base64String.stringByReplacingOccurrencesOfString("+", withString: "%2B", options: NSStringCompareOptions.LiteralSearch, range: nil)
+		base64String = base64String.stringByReplacingOccurrencesOfString("/", withString: "%2F", options: NSStringCompareOptions.LiteralSearch, range: nil)
+
+		callback(data: [
+			"img": base64String
+		])
+	}
+
+
 	/**
 	 * Private API.
 	 */
