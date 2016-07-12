@@ -46,6 +46,9 @@ module.exports = {
 	MediaStream:           MediaStream,
 	MediaStreamTrack:      MediaStreamTrack,
 
+	// Expose a function to capture current video image.
+	getVideoImageData:     getVideoImageData,
+
 	// Expose a function to refresh current videos rendering a MediaStream.
 	refreshVideos:         refreshVideos,
 
