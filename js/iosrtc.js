@@ -79,6 +79,15 @@ domready(function () {
 });
 
 
+function getVideoImageData(successCallback, errorCallback) {
+	debug('getVideoImageData()');
+
+	var keys = Object.keys(mediaStreamRenderers);
+
+	exec(successCallback, errorCallback, 'iosrtcPlugin', 'MediaStreamRenderer_image', [mediaStreamRenderers[keys[0]].id]);
+}
+
+
 function refreshVideos() {
 	debug('refreshVideos()');
 
