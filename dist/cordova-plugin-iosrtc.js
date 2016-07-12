@@ -2200,6 +2200,9 @@ module.exports = {
 	MediaStream:           MediaStream,
 	MediaStreamTrack:      MediaStreamTrack,
 
+	// Expose a function to capture current video image.
+	getVideoImageData:     getVideoImageData,
+
 	// Expose a function to refresh current videos rendering a MediaStream.
 	refreshVideos:         refreshVideos,
 
@@ -2228,6 +2231,15 @@ domready(function () {
 	MediaStream.setMediaStreams(mediaStreams);
 	videoElementsHandler(mediaStreams, mediaStreamRenderers);
 });
+
+
+function getVideoImageData(successCallback, errorCallback) {
+	debug('getVideoImageData()');
+
+	var keys = Object.keys(mediaStreamRenderers);
+
+	exec(successCallback, errorCallback, 'iosrtcPlugin', 'MediaStreamRenderer_image', [mediaStreamRenderers[keys[0]].id]);
+}
 
 
 function refreshVideos() {
